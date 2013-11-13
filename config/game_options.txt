@@ -43,7 +43,7 @@ ANIMAL_DELAY 0
 
 ### NAMES ###
 ## If uncommented this adds a random surname to a player's name if they only specify one name.
-#HUMANS_NEED_SURNAMES
+HUMANS_NEED_SURNAMES
 
 ## If uncommented, this forces all players to use random names !and appearances!.
 #FORCE_RANDOM_NAMES
@@ -74,18 +74,18 @@ ALERT_DELTA The station's self-destruct mechanism has been engaged. All crew are
 ## Default probablity is 1, increase to make that mode more likely to be picked.
 ## Set to 0 to disable that mode.
 
-PROBABILITY TRAITOR 5
-PROBABILITY TRAITORCHAN 4
-PROBABILITY DOUBLE_AGENTS 3
-PROBABILITY NUCLEAR 2
-PROBABILITY REVOLUTION 2
-PROBABILITY CULT 2
-PROBABILITY CHANGELING 2
-PROBABILITY WIZARD 4
-PROBABILITY MALFUNCTION 1
-PROBABILITY BLOB 2
+PROBABILITY TRAITOR 0
+PROBABILITY TRAITORCHAN 0
+PROBABILITY DOUBLE_AGENTS 0
+PROBABILITY NUCLEAR 0
+PROBABILITY REVOLUTION 0
+PROBABILITY CULT 0
+PROBABILITY CHANGELING 0
+PROBABILITY WIZARD 0
+PROBABILITY MALFUNCTION 0
+PROBABILITY BLOB 0
 PROBABILITY METEOR 0
-PROBABILITY EXTENDED 0
+PROBABILITY EXTENDED 1
 
 ## You probably want to keep sandbox off by default for secret and random.
 PROBABILITY SANDBOX 0
@@ -114,7 +114,7 @@ ALLOW_LATEJOIN_ANTAGONISTS
 ### RANDOM EVENTS ###
 
 ## Comment this to disable random events during the round.
-ALLOW_RANDOM_EVENTS
+#ALLOW_RANDOM_EVENTS
 
 
 ### AI ###
@@ -154,8 +154,8 @@ GATEWAY_DELAY 18000
 
 ### NON-VOCAL SILICONS ###
 ## Uncomment to stop the AI, or cyborgs, from having vocal communication.
-#SILENT_AI
-#SILENT_BORG
+SILENT_AI
+SILENT_BORG
 
 ### SANDBOX PANEL AUTOCLOSE ###
 ## The sandbox panel's item spawning dialog now stays open even after you click an option.
