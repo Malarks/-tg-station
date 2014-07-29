@@ -2,7 +2,7 @@
 /var/const/CLOSED = 2
 
 /obj/machinery/door/firedoor
-	name = "Firelock"
+	name = "firelock"
 	desc = "Apply crowbar"
 	icon = 'icons/obj/doors/Doorfire.dmi'
 	icon_state = "door_open"
@@ -133,3 +133,7 @@
 		return !density
 	else
 		return 1
+
+//used in the AStar algorithm to determinate if the turf the door is on is passable
+/obj/machinery/door/firedoor/CanAStarPass()
+	return !density

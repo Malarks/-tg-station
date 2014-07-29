@@ -4,7 +4,6 @@
 	icon_state = "yellow"
 	density = 1
 	var/health = 100.0
-	flags = FPRINT | CONDUCT
 
 	var/valve_open = 0
 	var/release_pressure = ONE_ATMOSPHERE
@@ -17,63 +16,100 @@
 	volume = 1000
 	use_power = 0
 	var/release_log = ""
+	var/update_flag = 0
 
 /obj/machinery/portable_atmospherics/canister/sleeping_agent
-	name = "Canister: \[N2O\]"
+	name = "canister: \[N2O\]"
 	icon_state = "redws"
 	canister_color = "redws"
 	can_label = 0
 /obj/machinery/portable_atmospherics/canister/nitrogen
-	name = "Canister: \[N2\]"
+	name = "canister: \[N2\]"
 	icon_state = "red"
 	canister_color = "red"
 	can_label = 0
 /obj/machinery/portable_atmospherics/canister/oxygen
-	name = "Canister: \[O2\]"
+	name = "canister: \[O2\]"
 	icon_state = "blue"
 	canister_color = "blue"
 	can_label = 0
 /obj/machinery/portable_atmospherics/canister/toxins
-	name = "Canister \[Toxin (Bio)\]"
+	name = "canister \[Toxin (Bio)\]"
 	icon_state = "orange"
 	canister_color = "orange"
 	can_label = 0
 /obj/machinery/portable_atmospherics/canister/carbon_dioxide
-	name = "Canister \[CO2\]"
+	name = "canister \[CO2\]"
 	icon_state = "black"
 	canister_color = "black"
 	can_label = 0
 /obj/machinery/portable_atmospherics/canister/air
-	name = "Canister \[Air\]"
+	name = "canister \[Air\]"
 	icon_state = "grey"
 	canister_color = "grey"
 	can_label = 0
 
+/obj/machinery/portable_atmospherics/canister/proc/check_change()
+	var/old_flag = update_flag
+	update_flag = 0
+	if(holding)
+		update_flag |= 1
+	if(connected_port)
+		update_flag |= 2
+
+	var/tank_pressure = air_contents.return_pressure()
+	if(tank_pressure < 10)
+		update_flag |= 4
+	else if(tank_pressure < ONE_ATMOSPHERE)
+		update_flag |= 8
+	else if(tank_pressure < 15*ONE_ATMOSPHERE)
+		update_flag |= 16
+	else
+		update_flag |= 32
+
+	if(update_flag == old_flag)
+		return 1
+	else
+		return 0
+
 /obj/machinery/portable_atmospherics/canister/update_icon()
+/*
+update_flag
+1 = holding
+2 = connected_port
+4 = tank_pressure < 10
+8 = tank_pressure < ONE_ATMOS
+16 = tank_pressure < 15*ONE_ATMOS
+32 = tank_pressure go boom.
+*/
+
+	if (destroyed)
+		overlays = 0
+		icon_state = text("[]-1", canister_color)
+		return
+
+	if(icon_state != "[canister_color]")
+		icon_state = "[canister_color]"
+
+	if(check_change()) //Returns 1 if no change needed to icons.
+		return
+
 	src.overlays = 0
 
-	if (src.destroyed)
-		src.icon_state = "[src.canister_color]-1"
-
-	else
-		icon_state = "[canister_color]"
-		if(holding)
-			overlays += "can-open"
-
-		if(connected_port)
-			overlays += "can-connector"
-
-		var/tank_pressure = air_contents.return_pressure()
-
-		if (tank_pressure < 10)
-			overlays += image('icons/obj/atmos.dmi', "can-o0")
-		else if (tank_pressure < ONE_ATMOSPHERE)
-			overlays += image('icons/obj/atmos.dmi', "can-o1")
-		else if (tank_pressure < 15*ONE_ATMOSPHERE)
-			overlays += image('icons/obj/atmos.dmi', "can-o2")
-		else
-			overlays += image('icons/obj/atmos.dmi', "can-o3")
+	if(update_flag & 1)
+		overlays += "can-open"
+	if(update_flag & 2)
+		overlays += "can-connector"
+	if(update_flag & 4)
+		overlays += "can-o0"
+	if(update_flag & 8)
+		overlays += "can-o1"
+	else if(update_flag & 16)
+		overlays += "can-o2"
+	else if(update_flag & 32)
+		overlays += "can-o3"
 	return
+
 
 /obj/machinery/portable_atmospherics/canister/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > temperature_resistance)
@@ -162,28 +198,24 @@
 	return
 
 /obj/machinery/portable_atmospherics/canister/bullet_act(var/obj/item/projectile/Proj)
-	if(Proj.damage)
-		src.health -= round(Proj.damage / 2)
-		healthcheck()
+	if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
+		if(Proj.damage)
+			src.health -= round(Proj.damage / 2)
+			healthcheck()
 	..()
-
-/obj/machinery/portable_atmospherics/canister/meteorhit(var/obj/O as obj)
-	src.health = 0
-	healthcheck()
-	return
 
 /obj/machinery/portable_atmospherics/canister/ex_act(severity)
 	switch(severity)
 		if(1.0)
 			if(destroyed || prob(30))
-				del(src)
+				qdel(src)
 			else
 				src.health = 0
 				healthcheck()
 			return
 		if(2.0)
 			if(destroyed)
-				del(src)
+				qdel(src)
 			else
 				src.health -= rand(40, 100)
 				healthcheck()
@@ -264,14 +296,14 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 		if(href_list["toggle"])
 			if (valve_open)
 				if (holding)
-					release_log += "Valve was <b>closed</b> by [usr], stopping the transfer into the [holding]<br>"
+					release_log += "Valve was <b>closed</b> by [usr] ([usr.ckey]), stopping the transfer into the [holding]<br>"
 				else
-					release_log += "Valve was <b>closed</b> by [usr], stopping the transfer into the <font color='red'><b>air</b></font><br>"
+					release_log += "Valve was <b>closed</b> by [usr] ([usr.ckey]), stopping the transfer into the <font color='red'><b>air</b></font><br>"
 			else
 				if (holding)
-					release_log += "Valve was <b>opened</b> by [usr], starting the transfer into the [holding]<br>"
+					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the [holding]<br>"
 				else
-					release_log += "Valve was <b>opened</b> by [usr], starting the transfer into the <font color='red'><b>air</b></font><br>"
+					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
 			valve_open = !valve_open
 
 		if (href_list["remove_tank"])
@@ -301,7 +333,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 				if (label)
 					src.canister_color = colors[label]
 					src.icon_state = colors[label]
-					src.name = "Canister: [label]"
+					src.name = "canister: [label]"
 		src.updateUsrDialog()
 		src.add_fingerprint(usr)
 		update_icon()

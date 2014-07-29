@@ -3,7 +3,7 @@
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "paper_bin1"
 	item_state = "sheet-metal"
-	throwforce = 1
+	throwforce = 0
 	w_class = 3
 	throw_speed = 3
 	throw_range = 7
@@ -23,10 +23,10 @@
 	else if(istype(over_object, /obj/screen))
 		switch(over_object.name)
 			if("r_hand")
-				M.u_equip(src)
+				M.unEquip(src)
 				M.put_in_r_hand(src)
 			if("l_hand")
-				M.u_equip(src)
+				M.unEquip(src)
 				M.put_in_l_hand(src)
 
 	add_fingerprint(M)
@@ -76,11 +76,11 @@
 
 /obj/item/weapon/paper_bin/examine()
 	set src in oview(1)
-
+	..()
 	if(amount)
-		usr << "<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>"
+		usr << "It contains " + (amount > 1 ? "[amount] papers" : " one paper")+"."
 	else
-		usr << "<span class='notice'>There are no papers in the bin.</span>"
+		usr << "It doesn't contain anything."
 
 
 /obj/item/weapon/paper_bin/update_icon()

@@ -1,5 +1,5 @@
 /obj/machinery/meter
-	name = "meter"
+	name = "gas flow meter"
 	desc = "It measures something."
 	icon = 'icons/obj/meter.dmi'
 	icon_state = "meterX"
@@ -82,10 +82,8 @@
 
 /obj/machinery/meter/examine()
 	set src in view(3)
-
-	var/t = "A gas flow meter. "
-	t += status()
-	usr << t
+	..()
+	usr << status()
 
 
 /obj/machinery/meter/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
@@ -98,7 +96,7 @@
 				"\blue You have unfastened \the [src].", \
 				"You hear ratchet.")
 			new /obj/item/pipe_meter(src.loc)
-			del(src)
+			qdel(src)
 		return
 	..()
 

@@ -51,10 +51,11 @@ obj/machinery/atmospherics/pipe
 
 		return parent.return_network(reference)
 
-	Del()
+	Destroy()
 		del(parent)
 		if(air_temporary)
 			loc.assume_air(air_temporary)
+			del(air_temporary)
 
 		..()
 
@@ -166,7 +167,7 @@ obj/machinery/atmospherics/pipe
 			var/datum/effect/effect/system/harmless_smoke_spread/smoke = new
 			smoke.set_up(1,0, src.loc, 0)
 			smoke.start()
-			del(src)
+			qdel(src)
 
 		proc/normalize_dir()
 			if(dir==3)
@@ -174,7 +175,7 @@ obj/machinery/atmospherics/pipe
 			else if(dir==12)
 				dir = 4
 
-		Del()
+		Destroy()
 			if(node1)
 				node1.disconnect(src)
 			if(node2)
@@ -204,7 +205,7 @@ obj/machinery/atmospherics/pipe
 
 			else
 				if(!node1&&!node2)
-					del(src) //TODO: silent deleting looks weird
+					qdel(src) //TODO: silent deleting looks weird
 				var/have_node1 = node1?1:0
 				var/have_node2 = node2?1:0
 				icon_state = "exposed[have_node1][have_node2][invisibility ? "-f" : "" ]"
@@ -336,7 +337,7 @@ obj/machinery/atmospherics/pipe
 		icon = 'icons/obj/atmospherics/pipe_tank.dmi'
 		icon_state = "intact"
 
-		name = "Pressure Tank"
+		name = "pressure tank"
 		desc = "A large vessel containing pressurized gas."
 
 		volume = 10000 //in liters, 1 meters by 1 meters by 2 meters
@@ -367,7 +368,7 @@ obj/machinery/atmospherics/pipe
 				nodealert = 0
 */
 		carbon_dioxide
-			name = "Pressure Tank (Carbon Dioxide)"
+			name = "pressure tank (Carbon Dioxide)"
 
 			New()
 				air_temporary = new
@@ -380,7 +381,7 @@ obj/machinery/atmospherics/pipe
 
 		toxins
 			icon = 'icons/obj/atmospherics/orange_pipe_tank.dmi'
-			name = "Pressure Tank (Plasma)"
+			name = "pressure tank (Plasma)"
 
 			New()
 				air_temporary = new
@@ -393,7 +394,7 @@ obj/machinery/atmospherics/pipe
 
 		oxygen_agent_b
 			icon = 'icons/obj/atmospherics/red_orange_pipe_tank.dmi'
-			name = "Pressure Tank (Oxygen + Plasma)"
+			name = "pressure tank (Oxygen + Plasma)"
 
 			New()
 				air_temporary = new
@@ -409,7 +410,7 @@ obj/machinery/atmospherics/pipe
 
 		oxygen
 			icon = 'icons/obj/atmospherics/blue_pipe_tank.dmi'
-			name = "Pressure Tank (Oxygen)"
+			name = "pressure tank (Oxygen)"
 
 			New()
 				air_temporary = new
@@ -422,7 +423,7 @@ obj/machinery/atmospherics/pipe
 
 		nitrogen
 			icon = 'icons/obj/atmospherics/red_pipe_tank.dmi'
-			name = "Pressure Tank (Nitrogen)"
+			name = "pressure tank (Nitrogen)"
 
 			New()
 				air_temporary = new
@@ -435,7 +436,7 @@ obj/machinery/atmospherics/pipe
 
 		air
 			icon = 'icons/obj/atmospherics/red_pipe_tank.dmi'
-			name = "Pressure Tank (Air)"
+			name = "pressure tank (Air)"
 
 			New()
 				air_temporary = new
@@ -447,7 +448,7 @@ obj/machinery/atmospherics/pipe
 
 				..()
 
-		Del()
+		Destroy()
 			if(node1)
 				node1.disconnect(src)
 
@@ -494,7 +495,7 @@ obj/machinery/atmospherics/pipe
 		icon = 'icons/obj/atmospherics/pipe_vent.dmi'
 		icon_state = "intact"
 
-		name = "Vent"
+		name = "vent"
 		desc = "A large air vent"
 
 		level = 1
@@ -531,7 +532,7 @@ obj/machinery/atmospherics/pipe
 			else if (nodealert)
 				nodealert = 0
 */
-		Del()
+		Destroy()
 			if(node1)
 				node1.disconnect(src)
 
@@ -642,7 +643,7 @@ obj/machinery/atmospherics/pipe
 			else if (nodealert)
 				nodealert = 0
 */
-		Del()
+		Destroy()
 			if(node1)
 				node1.disconnect(src)
 			if(node2)
@@ -701,7 +702,7 @@ obj/machinery/atmospherics/pipe
 				icon_state = "manifold_[connected]_[unconnected]"
 
 				if(!connected)
-					del(src)
+					qdel(src)
 
 			return
 

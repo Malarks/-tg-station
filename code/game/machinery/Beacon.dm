@@ -2,7 +2,7 @@
 
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "floor_beaconf"
-	name = "Bluespace Gigabeacon"
+	name = "bluespace gigabeacon"
 	desc = "A device that draws power from bluespace and creates a permanent tracking beacon."
 	level = 1		// underfloor
 	layer = 2.5
@@ -20,9 +20,9 @@
 
 		hide(T.intact)
 
-	Del()
+	Destroy()
 		if(Beacon)
-			del(Beacon)
+			qdel(Beacon)
 		..()
 
 	// update the invisibility and icon

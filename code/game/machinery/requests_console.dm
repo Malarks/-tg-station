@@ -7,7 +7,7 @@ var/req_console_information = list()
 var/list/obj/machinery/requests_console/allConsoles = list()
 
 /obj/machinery/requests_console
-	name = "Requests Console"
+	name = "requests console"
 	desc = "A console intended to send requests to diferent departments on the station."
 	anchored = 1
 	icon = 'icons/obj/terminals.dmi'
@@ -80,7 +80,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			icon_state = "req_comp0"
 
 /obj/machinery/requests_console/New()
-	name = "[department] Requests Console"
+	name = "\improper [department] requests console"
 	allConsoles += src
 	//req_console_departments += department
 	switch(departmentType)
@@ -283,6 +283,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 		for(var/mob/M in player_list)
 			if(!istype(M,/mob/new_player))
 				M << "<b><font size = 3><font color = red>[department] announcement:</font color> [message]</font size></b>"
+		news_network.SubmitArticle(message, department, "Station Announcements", null)
 		announceAuth = 0
 		message = ""
 		screen = 0
@@ -412,9 +413,11 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 /obj/machinery/requests_console/attackby(var/obj/item/weapon/O as obj, var/mob/user as mob)
 	if (istype(O, /obj/item/weapon/crowbar))
 		if(open)
+			user << "You close the maintenance panel."
 			open = 0
 			icon_state="req_comp0"
 		else
+			user << "You open the maintenance panel."
 			open = 1
 			if(hackState == 0)
 				icon_state="req_comp_open"
@@ -423,9 +426,11 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	if (istype(O, /obj/item/weapon/screwdriver))
 		if(open)
 			if(hackState == 0)
+				user << "You modify the wiring."
 				hackState = 1
 				icon_state="req_comp_rewired"
 			else if(hackState == 1)
+				user << "You reset the wiring."
 				hackState = 0
 				icon_state="req_comp_open"
 		else

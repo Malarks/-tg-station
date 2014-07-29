@@ -109,7 +109,7 @@
 						index2 -= message2_len
 				update_display(line1, line2)
 			if(4)				// supply shuttle timer
-				var/line1 = "SUPPLY"
+				var/line1 = "CARGO"
 				var/line2
 				if(supply_shuttle.moving)
 					line2 = get_supply_shuttle_timer()
@@ -202,7 +202,7 @@
 /obj/machinery/ai_status_display
 	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
-	name = "AI display"
+	name = "\improper AI display"
 	anchored = 1
 	density = 0
 

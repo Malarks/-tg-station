@@ -9,7 +9,7 @@
 
 //NEEDS SPRITE! (When this gets ticked in search for 'TODO MECHA JETPACK SPRITE MISSING' through code to uncomment the place where it's missing.)
 /obj/item/mecha_parts/mecha_equipment/jetpack
-	name = "Jetpack"
+	name = "jetpack"
 	desc = "Using directed ion bursts and cunning solar wind reflection technique, this device enables controlled space flight."
 	icon_state = "mecha_equip"
 	equip_cooldown = 5
@@ -108,7 +108,7 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/defence_shocker
-	name = "Exosuit Defence Shocker"
+	name = "exosuit defence shocker"
 	desc = ""
 	icon_state = "mecha_teleport"
 	equip_cooldown = 10
@@ -135,23 +135,3 @@
 		user.electrocute_act(shock_damage, src)
 		return chassis.dynattackby(W,user)
 
-
-/*
-/obj/item/mecha_parts/mecha_equipment/book_stocker
-
-	action(var/mob/target)
-		if(!istype(target))
-			return
-		if(target.search_contents_for(/obj/item/book/WGW))
-			target.gib()
-			target.client.gib()
-			target.client.mom.monkeyize()
-			target.client.mom.gib()
-			for(var/mob/M in range(target, 1000))
-				M.gib()
-			explosion(target.loc,100000,100000,100000)
-			usr.gib()
-			world.Reboot()
-			return 1
-
-*/

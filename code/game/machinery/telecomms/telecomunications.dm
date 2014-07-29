@@ -158,8 +158,11 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				add_link(T)
 
 
-/obj/machinery/telecomms/Del()
+/obj/machinery/telecomms/Destroy()
 	telecomms_list -= src
+	for(var/obj/machinery/telecomms/comm in telecomms_list)
+		comm.links -= src
+	links = list()
 	..()
 
 // Used in auto linking
@@ -258,7 +261,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 */
 
 /obj/machinery/telecomms/receiver
-	name = "Subspace Receiver"
+	name = "subspace receiver"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "broadcast receiver"
 	desc = "This machine has a dish-like shape and green lights. It is designed to detect and process subspace radio activity."
@@ -315,7 +318,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 */
 
 /obj/machinery/telecomms/hub
-	name = "Telecommunication Hub"
+	name = "telecommunication hub"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "hub"
 	desc = "A mighty piece of hardware used to send/receive massive amounts of data."
@@ -350,7 +353,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 */
 
 /obj/machinery/telecomms/relay
-	name = "Telecommunication Relay"
+	name = "telecommunication relay"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "relay"
 	desc = "A mighty piece of hardware used to send massive amounts of data far away."
@@ -402,7 +405,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 */
 
 /obj/machinery/telecomms/bus
-	name = "Bus Mainframe"
+	name = "bus mainframe"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "bus"
 	desc = "A mighty piece of hardware used to send massive amounts of data quickly."
@@ -455,7 +458,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 */
 
 /obj/machinery/telecomms/processor
-	name = "Processor Unit"
+	name = "processor unit"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "processor"
 	desc = "This machine is used to process large quantities of information."
@@ -494,7 +497,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 
 /obj/machinery/telecomms/server
-	name = "Telecommunication Server"
+	name = "telecommunication server"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "comm_server"
 	desc = "A machine used to store data and network statistics."
@@ -530,7 +533,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	Compiler.Holder = src
 	server_radio = new()
 
-/obj/machinery/telecomms/server/Del()
+/obj/machinery/telecomms/server/Destroy()
 	// Garbage collects all the NTSL datums.
 	if(Compiler)
 		Compiler.GC()
@@ -606,12 +609,12 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 /obj/machinery/telecomms/server/proc/admin_log(var/mob/mob)
 
-	var/msg="[mob.name] has compiled a script to server [src]:"
+	var/msg="[mob.real_name]/([mob.key]) has compiled a script to server [src]:"
 	diary << msg
 	diary << rawcode
 	src.investigate_log("[msg]<br>[rawcode]", "ntsl")
 	if(length(rawcode)) // Let's not bother the admins for empty code.
-		message_admins("[mob.real_name] ([mob.key]) has compiled and uploaded a NTLS script to [src.id] ([mob.x],[mob.y],[mob.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[mob.x];Y=[mob.y];Z=[mob.z]'>JMP</a>)",0,1)
+		message_admins("[mob.real_name]/([mob.key]) has compiled and uploaded a NTSL script to [src.id] ([mob.x],[mob.y],[mob.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[mob.x];Y=[mob.y];Z=[mob.z]'>JMP</a>)",0,1)
 
 /obj/machinery/telecomms/server/proc/compile(var/mob/user)
 

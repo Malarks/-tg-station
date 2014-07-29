@@ -1,8 +1,8 @@
 /obj/mecha/medical/odysseus
 	desc = "These exosuits are developed and produced by Vey-Med. (&copy; All rights reserved)."
-	name = "Odysseus"
+	name = "\improper Odysseus"
 	icon_state = "odysseus"
-	step_in = 2
+	step_in = 3
 	max_temperature = 15000
 	health = 120
 	wreckage = /obj/structure/mecha_wreckage/odysseus
@@ -59,7 +59,7 @@
 
 //TODO - Check documentation for client.eye and client.perspective...
 /obj/item/clothing/glasses/hud/health/mech
-	name = "Integrated Medical Hud"
+	name = "integrated medical Hud"
 
 
 	process_hud(var/mob/M)
