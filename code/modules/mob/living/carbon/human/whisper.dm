@@ -6,6 +6,10 @@
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
 		return
 
+	if(stat == DEAD)
+		return
+
+
 	message = trim(copytext(strip_html_simple(message), 1, MAX_MESSAGE_LEN))
 	if(!can_speak(message))
 		return
@@ -42,10 +46,11 @@
 
 	var/list/listening_dead = list()
 	for(var/mob/M in player_list)
-		if(M.stat == DEAD && (M.client.prefs.toggles & CHAT_GHOSTEARS) && client)
+		if(M.stat == DEAD && ((M.client.prefs.toggles & CHAT_GHOSTWHISPER) || (get_dist(M, src) <= 7)))
 			listening_dead |= M
 
-	var/list/listening = get_hear(1, src) | listening_dead
+	var/list/listening = get_hear(1, src)
+	listening |= listening_dead
 	var/list/eavesdropping = hearers(2, src)
 	eavesdropping -= listening
 	var/list/watching  = hearers(5, src)

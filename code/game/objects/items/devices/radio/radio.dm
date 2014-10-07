@@ -1,8 +1,3 @@
-var/GLOBAL_RADIO_TYPE = 1 // radio type to use
-	// 0 = old radios
-	// 1 = new radios (subspace technology)
-
-
 /obj/item/device/radio
 	icon = 'icons/obj/radio.dmi'
 	name = "station bounced radio"
@@ -245,7 +240,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	//#### Tagging the signal with all appropriate identity values ####//
 
 	// ||-- The mob's name identity --||
-	var/displayname = M.name	// grab the display name (name you get when you hover over someone's icon)
 	var/real_name = M.name // mob's real name
 	var/mobkey = "none" // player key associated with mob
 	var/voicemask = 0 // the speaker is wearing a voice mask
@@ -265,7 +259,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		var/datum/data/record/findjob = find_record("name", voice, data_core.general)
 
 		if(voice != real_name)
-			displayname = voice
 			voicemask = 1
 		if(findjob)
 			jobname = findjob.fields["rank"]
@@ -310,7 +303,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 			"mob" = M, // store a reference to the mob
 			"mobtype" = M.type, 	// the mob's type
 			"realname" = real_name, // the mob's real name
-			"name" = voice,			// the mob's display name
+			"name" = voice,			// the mob's voice name
 			"job" = jobname,		// the mob's job
 			"key" = mobkey,			// the mob's key
 			"vmask" = voicemask,	// 1 if the mob is using a voice gas mask
@@ -356,17 +349,17 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	/* --- Try to send a normal subspace broadcast first */
 
 	signal.data = list(
-		"mob" = M, // store a reference to the mob
+		"mob" = M, 				// store a reference to the mob
 		"mobtype" = M.type, 	// the mob's type
 		"realname" = real_name, // the mob's real name
-		"name" = displayname,	// the mob's display name
+		"name" = voice,			// the mob's voice name
 		"job" = jobname,		// the mob's job
 		"key" = mobkey,			// the mob's key
 		"vmask" = voicemask,	// 1 if the mob is using a voice gas mas
 
-		"compression" = 0, // uncompressed radio signal
-		"message" = message, // the actual sent message
-		"radio" = src, // stores the radio used for transmission
+		"compression" = 0,		// uncompressed radio signal
+		"message" = message, 	// the actual sent message
+		"radio" = src, 			// stores the radio used for transmission
 		"slow" = 0,
 		"traffic" = 0,
 		"type" = 0,
@@ -388,7 +381,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		// Oh my god; the comms are down or something because the signal hasn't been broadcasted yet in our level.
 		// Send a mundane broadcast with limited targets:
 		Broadcast_Message(M, voicemask,
-						  src, message, displayname, jobname, real_name,
+						  src, message, voice, jobname, real_name,
 						  filter_type, signal.data["compression"], list(position.z), freq)
 
 /obj/item/device/radio/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq)
@@ -450,16 +443,12 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		return get_hearers_in_view(canhear_range, src)
 
 
-/obj/item/device/radio/examine()
-	set src in view()
-
+/obj/item/device/radio/examine(mob/user)
 	..()
-	if ((in_range(src, usr) || loc == usr))
-		if (b_stat)
-			usr.show_message("<span class='notice'>\the [src] can be attached and modified!</span>")
-		else
-			usr.show_message("<span class='notice'>\the [src] can not be modified or attached!</span>")
-	return
+	if (b_stat)
+		user << "<span class='notice'>[name] can be attached and modified.</span>"
+	else
+		user << "<span class='notice'>[name] can not be modified or attached.</span>"
 
 /obj/item/device/radio/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
@@ -612,8 +601,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	user << browse(dat, "window=radio")
 	onclose(user, "radio")
 	return
-
-
 
 /obj/item/device/radio/off	// Station bounced radios, their only difference is spawning with the speakers off, this was made to help the lag.
 	listening = 0			// And it's nice to have a subtype too for future features.

@@ -10,7 +10,7 @@
 	curable = 0
 	cure_chance = 15//higher chance to cure, since two reagents are required
 	desc = "This disease destroys the braincells, causing brain fever, brain necrosis and general intoxication."
-	severity = "Major"
+	severity = "Dangerous!"
 	requires = 1
 	required_limb = list(/obj/item/organ/limb/head)
 
@@ -51,8 +51,7 @@
 					affected_mob << "<span class='danger'>Strange buzzing fills your head, removing all thoughts.</span>"
 			if(prob(3))
 				affected_mob << "<span class='danger'>You lose consciousness...</span>"
-				for(var/mob/O in viewers(affected_mob, null))
-					O.show_message("[affected_mob] suddenly collapses", 1)
+				affected_mob.visible_message("<span class='warning'>[affected_mob] suddenly collapses</span>")
 				affected_mob.Paralyse(rand(5,10))
 				if(prob(1))
 					affected_mob.emote("snore")
