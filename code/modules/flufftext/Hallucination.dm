@@ -247,9 +247,8 @@ proc/check_panel(mob/M)
 
 /obj/effect/fake_attacker/attackby(var/obj/item/weapon/P as obj, mob/user as mob)
 	step_away(src,my_target,2)
-	for(var/mob/M in oviewers(world.view,my_target))
-		M << "<span class='userdanger'>[my_target] flails around wildly.</span>"
-	my_target.show_message("<span class='userdanger'>[src] has been attacked by [my_target] </span>", 1) //Lazy.
+	my_target.visible_message("<span class='danger'>[my_target] flails around wildly.</span>", \
+							"<span class='danger'>[my_target] has attacked [src]!</span>")
 
 	src.health -= P.force
 
@@ -261,7 +260,7 @@ proc/check_panel(mob/M)
 		step_away(src,my_target,2)
 		if(prob(30))
 			for(var/mob/O in oviewers(world.view , my_target))
-				O << "<span class='userdanger'>[my_target] stumbles around.</span>"
+				O << "<span class='danger'>[my_target] stumbles around.</span>"
 
 /obj/effect/fake_attacker/New()
 	..()
@@ -306,7 +305,7 @@ proc/check_panel(mob/M)
 			if(prob(15))
 				if(weapon_name)
 					my_target << sound(pick('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg'))
-					my_target.show_message("<span class='danger'>[my_target] has been attacked with [weapon_name] by [src.name]!</span>", 1)
+					my_target.show_message("<span class='danger'>[src.name] has attacked [my_target] with [weapon_name]!</span>", 1)
 					my_target.staminaloss += 30
 					if(prob(20)) my_target.eye_blurry += 3
 					if(prob(33))
@@ -349,7 +348,7 @@ var/list/non_fakeattack_weapons = list(/obj/item/weapon/gun/projectile, /obj/ite
 	/obj/item/toy/syndicateballoon, /obj/item/weapon/gun/energy/laser/captain,\
 	/obj/item/weapon/hand_tele, /obj/item/weapon/rcd, /obj/item/weapon/tank/jetpack,\
 	/obj/item/clothing/under/rank/captain, /obj/item/device/aicard,\
-	/obj/item/clothing/shoes/magboots, /obj/item/blueprints, /obj/item/weapon/disk/nuclear,\
+	/obj/item/clothing/shoes/magboots, /obj/item/areaeditor/blueprints, /obj/item/weapon/disk/nuclear,\
 	/obj/item/clothing/suit/space/nasavoid, /obj/item/weapon/tank)
 
 /proc/fake_attack(var/mob/living/target)

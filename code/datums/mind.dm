@@ -37,7 +37,6 @@
 
 	var/memory
 
-	var/need_job_assign = 1 //Whether the job controller should give them a job
 	var/assigned_role
 	var/special_role
 
@@ -53,6 +52,8 @@
 	var/datum/changeling/changeling		//changeling holder
 
 	var/miming = 0 // Mime's vow of silence
+	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
+	var/datum/atom_hud/antag/antag_hud = null //this mind's antag HUD
 
 /datum/mind/New(var/key)
 	src.key = key
@@ -76,6 +77,7 @@
 	if(new_character.mind)								//disassociate any mind currently in our new body's mind variable
 		new_character.mind.current = null
 
+	transfer_antag_huds(new_character)					//inherit the antag HUDs from this mind (TODO: move this to the antag datum)
 	current = new_character								//associate ourself with our new body
 	new_character.mind = src							//and associate our new body with ourself
 
@@ -916,6 +918,7 @@
 					else
 						current.real_name = "[syndicate_name()] Operative #[ticker.mode.syndicates.len-1]"
 					special_role = "Syndicate"
+					assigned_role = "MODE"
 					current << "<span class='notice'>You are a [syndicate_name()] agent!</span>"
 					ticker.mode.forge_syndicate_objectives(src)
 					ticker.mode.greet_syndicate(src)
@@ -966,7 +969,7 @@
 					log_admin("[key_name(usr)] has traitor'ed [current].")
 					if(isAI(current))
 						var/mob/living/silicon/ai/A = current
-						call(/datum/game_mode/proc/add_law_zero)(A)
+						ticker.mode.add_law_zero(A)
 						A.show_laws()
 
 			if("autoobjectives")
@@ -1003,9 +1006,9 @@
 						src = null
 						M = H.monkeyize()
 						src = M.mind
-						current.contract_disease(new /datum/disease/transformation/jungle_fever,1,0)
+						current.ForceContractDisease(new /datum/disease/transformation/jungle_fever)
 					else if (istype(M))
-						current.contract_disease(new /datum/disease/transformation/jungle_fever,1,0)
+						current.ForceContractDisease(new /datum/disease/transformation/jungle_fever)
 			if("human")
 				if (check_rights(R_ADMIN, 0))
 					var/mob/living/carbon/human/H = current
@@ -1161,6 +1164,7 @@
 	if(!(src in ticker.mode.wizards))
 		ticker.mode.wizards += src
 		special_role = "Wizard"
+		assigned_role = "MODE"
 		//ticker.mode.learn_basic_spells(current)
 		if(!wizardstart.len)
 			current.loc = pick(latejoin)

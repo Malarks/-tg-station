@@ -22,7 +22,6 @@
 	name = "airlock"
 	icon = 'icons/obj/doors/Doorint.dmi'
 	icon_state = "door_closed"
-	power_channel = ENVIRON
 
 	var/aiControlDisabled = 0 //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
 	var/hackProof = 0 // if 1, this door can't be hacked by the AI
@@ -246,7 +245,7 @@
 	name = "bananium airlock"
 	desc = "Honkhonkhonk"
 	icon = 'icons/obj/doors/Doorbananium.dmi'
-	var/mineral = "clown"
+	var/mineral = "bananium"
 	doortype = /obj/structure/door_assembly/door_assembly_clown
 
 /obj/machinery/door/airlock/sandstone
@@ -899,7 +898,7 @@ About the new airlock wires panel:
 					if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
 						return					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 					welded = !welded
-					user.visible_message("<span class='warning'>[src] has been [welded? "welded shut":"unwelded"] by [user.name].</span>", \
+					user.visible_message("<span class='warning'>[user.name] has [welded? "welded shut":"unwelded"] [src].</span>", \
 										"<span class='notice'>You've [welded ? "welded the airlock shut":"unwelded the airlock"].</span>")
 					update_icon()
 		return
@@ -1031,10 +1030,8 @@ About the new airlock wires panel:
 		if(locate(/mob/living) in get_turf(src))
 		//	playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 0)	//THE BUZZING IT NEVER STOPS	-Pete
 			spawn (60)
-				close()
+				autoclose()
 			return
-
-	crush()
 
 	if(forced < 2)
 		if(emagged)
@@ -1053,8 +1050,25 @@ About the new airlock wires panel:
 	if(killthis)
 		killthis.ex_act(2)//Smashin windows
 
-	..()
-
+	if(density)
+		return 1
+	operating = 1
+	do_animate("closing")
+	src.layer = 3.1
+	sleep(5)
+	src.density = 1
+	if(!safe)
+		crush()
+	sleep(5)
+	update_icon()
+	if(visible && !glass)
+		SetOpacity(1)
+	operating = 0
+	air_update_turf(1)
+	update_freelook_sight()
+	if(locate(/mob/living) in get_turf(src))
+		open()
+	return
 
 /obj/machinery/door/airlock/New()
 	..()
@@ -1180,4 +1194,6 @@ About the new airlock wires panel:
 				heat_proof = 0
 	update_icon()
 
-
+/obj/machinery/door/airlock/CanAStarPass(var/obj/item/weapon/card/id/ID)
+//Airlock is passable if it is open (!density), bot has access, and is not bolted shut)
+	return !density || (check_access(ID) && !locked)

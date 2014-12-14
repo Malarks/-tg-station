@@ -17,6 +17,7 @@
 <A href='?src=\ref[src];make=0;dir=1'>Pipe</A><BR>
 <A href='?src=\ref[src];make=1;dir=5'>Bent Pipe</A><BR>
 <A href='?src=\ref[src];make=5;dir=1'>Manifold</A><BR>
+<A href='?src=\ref[src];make=19;dir=1'>4-Way Manifold</A><BR>
 <A href='?src=\ref[src];make=8;dir=1'>Manual Valve</A><BR>
 <A href='?src=\ref[src];make=18;dir=1'>Digital Valve</A><BR>
 <b>Devices:</b><BR>
@@ -141,7 +142,7 @@ Nah
 
 /obj/machinery/pipedispenser/disposal/attack_hand(user as mob)
 	if(..())
-		return
+		return 1
 
 	var/dat = {"<b>Disposal Pipes</b><br><br>
 <A href='?src=\ref[src];dmake=0'>Pipe</A><BR>
@@ -163,7 +164,7 @@ Nah
 
 /obj/machinery/pipedispenser/disposal/Topic(href, href_list)
 	if(..())
-		return
+		return 1
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
 	if(href_list["dmake"])
@@ -210,7 +211,7 @@ Nah
 
 /obj/machinery/pipedispenser/disposal/transit_tube/attack_hand(user as mob)
 	if(..())
-		return
+		return 1
 
 	var/dat = {"<B>Transit Tubes:</B><BR>
 <A href='?src=\ref[src];tube=0'>Straight Tube</A><BR>
@@ -229,9 +230,9 @@ Nah
 	return
 
 
-/obj/machinery/pipedispenser/disposal/Topic(href, href_list)
+/obj/machinery/pipedispenser/disposal/transit_tube/Topic(href, href_list)
 	if(..())
-		return
+		return 1
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
 	if(!wait)

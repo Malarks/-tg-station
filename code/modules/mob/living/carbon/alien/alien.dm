@@ -30,7 +30,7 @@
 	var/fire_alert = 0
 
 	var/heat_protection = 0.5
-
+	var/leaping = 0
 
 /mob/living/carbon/alien/New()
 	verbs += /mob/living/proc/mob_sleep
@@ -57,13 +57,8 @@
 /mob/living/carbon/alien/eyecheck()
 	return 2
 
-/mob/living/carbon/alien/updatehealth()
-	if(status_flags & GODMODE)
-		health = maxHealth
-		stat = CONSCIOUS
-		return
-	//oxyloss is only used for suicide
-	health = maxHealth - getOxyLoss() - getFireLoss() - getBruteLoss() - getCloneLoss()
+/mob/living/carbon/alien/getToxLoss()
+	return 0
 
 /mob/living/carbon/alien/proc/handle_environment(var/datum/gas_mixture/environment)
 
@@ -131,12 +126,12 @@
 			radiation = 0
 
 		switch(radiation)
-			if(1 to 49)
+			if(0 to 50)
 				radiation--
 				if(prob(25))
 					adjustToxLoss(1)
 
-			if(50 to 74)
+			if(50 to 75)
 				radiation -= 2
 				adjustToxLoss(1)
 				if(prob(5))
@@ -157,9 +152,6 @@
 
 /mob/living/carbon/alien/SpeciesCanConsume()
 	return 1 // Aliens can eat, and they can be fed food/drink
-
-/mob/living/carbon/alien/Process_Spaceslipping()
-	return 0 // Don't slip in space.
 
 /mob/living/carbon/alien/Stat()
 

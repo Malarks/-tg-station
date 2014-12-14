@@ -3,7 +3,7 @@
 	name = "Hivemind Communication"
 	desc = "We tune our senses to the airwaves to allow us to discreetly communicate and exchange DNA with other changelings."
 	helptext = "We will be able to talk with other changelings with :g. Exchanged DNA do not count towards absorb objectives."
-	dna_cost = 2
+	dna_cost = 0
 	chemical_cost = -1
 
 /obj/effect/proc_holder/changeling/hivemind_comms/on_purchase(var/mob/user)
@@ -31,7 +31,7 @@ var/list/datum/dna/hivemind_bank = list()
 /obj/effect/proc_holder/changeling/hivemind_upload/sting_action(var/mob/user)
 	var/datum/changeling/changeling = user.mind.changeling
 	var/list/names = list()
-	for(var/datum/dna/DNA in changeling.absorbed_dna)
+	for(var/datum/dna/DNA in (changeling.absorbed_dna+changeling.protected_dna))
 		if(!(DNA in hivemind_bank))
 			names += DNA.real_name
 
@@ -86,7 +86,7 @@ var/list/datum/dna/hivemind_bank = list()
 
 	if(changeling.absorbed_dna.len)
 		changeling.absorbed_dna.Cut(1,2)
-	changeling.absorbed_dna |= chosen_dna
+	changeling.store_dna(chosen_dna, user)
 	user << "<span class='notice'>We absorb the DNA of [S] from the air.</span>"
 	feedback_add_details("changeling_powers","HD")
 	return 1

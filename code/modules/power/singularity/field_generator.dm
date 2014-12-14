@@ -344,7 +344,7 @@ field_generator power level display
 	//I want to avoid using global variables.
 	spawn(1)
 		var/temp = 1 //stops spam
-		for(var/obj/machinery/singularity/O in world)
+		for(var/obj/singularity/O in world)
 			if(O.last_warning && temp)
 				if((world.time - O.last_warning) > 50) //to stop message-spam
 					temp = 0
@@ -353,5 +353,9 @@ field_generator power level display
 			O.last_warning = world.time
 
 /obj/machinery/field/generator/shock(mob/living/user as mob)
+	if(fields.len)
+		..()
+
+/obj/machinery/field/generator/bump(atom/movable/AM as mob|obj)
 	if(fields.len)
 		..()

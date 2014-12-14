@@ -267,6 +267,13 @@ silicate
 	required_reagents = list("carbon" = 1, "hydrogen" = 1, "anti_toxin" = 1)
 	result_amount = 2
 
+/datum/chemical_reaction/inacusiate
+	name = "inacusiate"
+	id = "inacusiate"
+	result = "inacusiate"
+	required_reagents = list("water" = 1, "carbon" = 1, "anti_toxin" = 1)
+	result_amount = 2
+
 /datum/chemical_reaction/ethylredoxrazine
 	name = "Ethylredoxrazine"
 	id = "ethylredoxrazine"
@@ -947,6 +954,16 @@ datum/chemical_reaction/pestkiller
 	var/mob/living/carbon/slime/S = new /mob/living/carbon/slime
 	S.loc = get_turf(holder.my_atom)
 
+/datum/chemical_reaction/slimeinaprov
+	name = "Slime Inaprovaline"
+	id = "m_inaprov"
+	result = "inaprovaline"
+	required_reagents = list("water" = 5)
+	result_amount = 3
+	required_other = 1
+	required_container = /obj/item/slime_extract/grey
+/datum/chemical_reaction/slimeinaprov/on_reaction(var/datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
 
 /datum/chemical_reaction/slimemonkey
 	name = "Slime Monkey"
@@ -1029,7 +1046,8 @@ datum/chemical_reaction/pestkiller
 				/mob/living/simple_animal/hostile/asteroid/goliath,
 				/mob/living/simple_animal/hostile/asteroid/hivelord,
 				/mob/living/simple_animal/hostile/asteroid/hivelordbrood,
-				/mob/living/simple_animal/hostile/carp/holocarp
+				/mob/living/simple_animal/hostile/carp/holocarp,
+				/mob/living/simple_animal/hostile/mining_drone
 				)//exclusion list for things you don't want the reaction to create.
 			var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 
@@ -1098,7 +1116,8 @@ datum/chemical_reaction/pestkiller
 				/mob/living/simple_animal/hostile/asteroid/goliath,
 				/mob/living/simple_animal/hostile/asteroid/hivelord,
 				/mob/living/simple_animal/hostile/asteroid/hivelordbrood,
-				/mob/living/simple_animal/hostile/carp/holocarp
+				/mob/living/simple_animal/hostile/carp/holocarp,
+				/mob/living/simple_animal/hostile/mining_drone
 				)//exclusion list for things you don't want the reaction to create.
 			var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 

@@ -94,7 +94,9 @@
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/stack/medical,
 		/obj/item/device/flashlight/pen,
-		/obj/item/weapon/extinguisher/mini
+		/obj/item/weapon/extinguisher/mini,
+		/obj/item/weapon/reagent_containers/hypospray,
+		/obj/item/device/rad_laser
 		)
 
 
@@ -109,9 +111,10 @@
 		/obj/item/weapon/melee/baton,
 		/obj/item/weapon/melee/classic_baton,
 		/obj/item/weapon/grenade/flashbang,
+		/obj/item/weapon/grenade/chem_grenade/teargas,
 		/obj/item/weapon/reagent_containers/spray/pepper,
-		/obj/item/weapon/handcuffs,
-		/obj/item/device/flash,
+		/obj/item/weapon/restraints/handcuffs,
+		/obj/item/device/flash/handheld,
 		/obj/item/clothing/glasses,
 		/obj/item/ammo_casing/shotgun,
 		/obj/item/ammo_box,
@@ -196,5 +199,6 @@
 		/obj/item/device/lightreplacer,
 		/obj/item/device/flashlight,
 		/obj/item/weapon/reagent_containers/spray,
-		/obj/item/weapon/soap
+		/obj/item/weapon/soap,
+		/obj/item/weapon/holosign_creator
 		)

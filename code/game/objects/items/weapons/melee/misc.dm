@@ -53,14 +53,14 @@
 			M.stuttering = 7
 		M.Stun(7)
 		M.Weaken(7)
-		M.visible_message("<span class='danger'>[M] has been beaten with [src] by [user]!</span>", \
-							"<span class='userdanger'>[M] has been beaten with [src] by [user]!</span>")
+		M.visible_message("<span class='danger'>[user] has beaten [M] with [src]!</span>", \
+							"<span class='userdanger'>[user] has beaten [M] with [src]!</span>")
 	else
 		playsound(loc, 'sound/effects/woodhit.ogg', 50, 1, -1)
 		M.Stun(7)
 		M.Weaken(7)
-		M.visible_message("<span class='danger'>[M] has been stunned with [src] by [user]!</span>", \
-							"<span class='userdanger'>[M] has been stunned with [src] by [user]!</span>")
+		M.visible_message("<span class='danger'>[user] has stunned [M] with [src]!</span>", \
+							"<span class='userdanger'>[user] has stunned [M] with [src]!</span>")
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -83,18 +83,14 @@
 /obj/item/weapon/melee/telebaton/attack_self(mob/user as mob)
 	on = !on
 	if(on)
-		user.visible_message("<span class ='warning'>With a flick of their wrist, [user] extends their telescopic baton.</span>",\
-		"<span class ='warning'>You extend the baton.</span>",\
-		"You hear an ominous click.")
+		user << "<span class ='warning'>You extend the baton.</span>"
 		icon_state = "telebaton_1"
 		item_state = "nullrod"
 		w_class = 4 //doesnt fit in backpack when its on for balance
 		force = 10 //seclite damage
 		attack_verb = list("smacked", "struck", "cracked", "beaten")
 	else
-		user.visible_message("<span class ='notice'>[user] collapses their telescopic baton.</span>",\
-		"<span class ='notice'>You collapse the baton.</span>",\
-		"You hear a click.")
+		user << "<span class ='notice'>You collapse the baton.</span>"
 		icon_state = "telebaton_0"
 		item_state = "telebaton_0" //no sprite in other words
 		slot_flags = SLOT_BELT
@@ -117,6 +113,11 @@
 			else
 				user.take_organ_damage(2*force)
 			return
+		if(isrobot(target))
+			..()
+			return
+		if(!isliving(target))
+			return
 		if (user.a_intent == "harm")
 			if(!..()) return
 			if(!isrobot(target)) return
@@ -124,8 +125,10 @@
 			if(cooldown <= 0)
 				playsound(get_turf(src), 'sound/effects/woodhit.ogg', 75, 1, -1)
 				target.Weaken(3)
+				add_logs(user, target, "stunned", object="telescopic baton")
 				src.add_fingerprint(user)
-				target.visible_message("<span class ='danger'>[target] has been knocked down with \the [src] by [user]!</span>")
+				target.visible_message("<span class ='danger'>[user] has knocked down [target] with \the [src]!</span>", \
+					"<span class ='userdanger'>[user] has knocked down [target] with \the [src]!</span>")
 				if(!iscarbon(user))
 					target.LAssailant = null
 				else

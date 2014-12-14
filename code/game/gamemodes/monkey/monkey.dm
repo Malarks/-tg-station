@@ -11,7 +11,6 @@
 	recommended_enemies = 1
 
 	restricted_jobs = list("Cyborg", "AI")
-	pre_setup_before_jobs = 1
 
 	var/carriers_to_make = 1
 	var/list/carriers = list()
@@ -64,7 +63,7 @@
 		ape_infectees += carriermind
 
 		var/datum/disease/D = new /datum/disease/transformation/jungle_fever
-		D.hidden = list(1,1)
+		D.visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
 		D.holder = carriermind.current
 		D.affected_mob = carriermind.current
 		carriermind.current.viruses += D
@@ -72,7 +71,7 @@
 
 /datum/game_mode/monkey/proc/check_monkey_victory()
 	for(var/mob/living/carbon/monkey/M in living_mob_list)
-		if (M.has_disease(/datum/disease/transformation/jungle_fever))
+		if (M.HasDisease(/datum/disease/transformation/jungle_fever))
 			var/area/A = get_area(M)
 			if(is_type_in_list(A, centcom_areas))
 				escaped_monkeys++

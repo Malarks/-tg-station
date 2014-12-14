@@ -57,7 +57,7 @@
 /obj/machinery/suit_storage_unit/security
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/security
 	HELMET_TYPE = /obj/item/clothing/head/helmet/space/hardsuit/security
-	MASK_TYPE = /obj/item/clothing/mask/gas/sechailer
+	MASK_TYPE = /obj/item/clothing/mask/gas
 
 /obj/machinery/suit_storage_unit/atmos
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/atmos
@@ -124,7 +124,7 @@
 		dump_everything()
 	update_icon()
 
-/obj/machinery/suit_storage_unit/ex_act(severity)
+/obj/machinery/suit_storage_unit/ex_act(severity, target)
 	switch(severity)
 		if(1.0)
 			if(prob(50))
@@ -427,8 +427,8 @@
 /obj/machinery/suit_storage_unit/container_resist()
 	var/mob/living/user = usr
 	if(islocked)
-		user.changeNext_move(100)
-		user.last_special = world.time + 100
+		user.changeNext_move(CLICK_CD_BREAKOUT)
+		user.last_special = world.time + CLICK_CD_BREAKOUT
 		var/breakout_time = 2
 		user << "<span class='notice'>You start kicking against the doors to escape! (This will take about [breakout_time] minutes.)</span>"
 		visible_message("You see [user] kicking against the doors of the [src]!")
