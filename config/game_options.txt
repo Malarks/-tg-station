@@ -77,27 +77,16 @@ ALERT_DELTA The station's self-destruct mechanism has been engaged. All crew are
 ## Default probablity is 1, increase to make that mode more likely to be picked.
 ## Set to 0 to disable that mode.
 
-#PROBABILITY TRAITOR 5
-PROBABILITY TRAITOR 0
-#PROBABILITY TRAITORCHAN 4
-PROBABILITY TRAITORCHAN 0
-#PROBABILITY DOUBLE_AGENTS 3
-PROBABILITY DOUBLE_AGENTS 0
-#PROBABILITY NUCLEAR 2
-PROBABILITY NUCLEAR 0
-#PROBABILITY REVOLUTION 2
-PROBABILITY REVOLUTION 0
-PROBABILITY GANG 0
-PROBABILITY CULT 0
-#PROBABILITY CULT 2
-PROBABILITY CHANGELING 0
-#PROBABILITY CHANGELING 2
-#PROBABILITY WIZARD 4
-PROBABILITY WIZARD 0
-#PROBABILITY MALFUNCTION 1
-PROBABILITY MALFUNCTION 0
-#PROBABILITY BLOB 2
-PROBABILITY BLOB 0
+PROBABILITY TRAITOR 5
+PROBABILITY TRAITORCHAN 4
+PROBABILITY DOUBLE_AGENTS 3
+PROBABILITY NUCLEAR 2
+PROBABILITY REVOLUTION 2
+PROBABILITY CULT 2
+PROBABILITY CHANGELING 2
+PROBABILITY WIZARD 4
+PROBABILITY MALFUNCTION 1
+PROBABILITY BLOB 2
 PROBABILITY MONKEY 0
 PROBABILITY METEOR 0
 PROBABILITY EXTENDED 1
@@ -155,13 +144,13 @@ SHUTTLE_REFUEL_DELAY 12000
 ## Variables calculate how number of antagonists will scale to population.
 ## Used as (Antagonists = Population / Coeff)
 ## Set to 0 to disable scaling and use default numbers instead.
-TRAITOR_SCALING_COEFF 6
-CHANGELING_SCALING_COEFF 6
+TRAITOR_SCALING_COEFF 0
+CHANGELING_SCALING_COEFF 0
 
 ## Variables calculate how number of open security officer positions will scale to population.
 ## Used as (Officers = Population / Coeff)
 ## Set to 0 to disable scaling and use default numbers instead.
-SECURITY_SCALING_COEFF 8
+SECURITY_SCALING_COEFF 0
 
 # The number of objectives traitors get.
 # Not including escaping/hijacking.
@@ -175,13 +164,13 @@ TRAITOR_OBJECTIVES_AMOUNT 2
 #PROTECT_ASSISTANT_FROM_ANTAGONIST
 
 ## If non-human species are barred from joining as a head of staff
-#ENFORCE_HUMAN_AUTHORITY
+ENFORCE_HUMAN_AUTHORITY
 
 ## If late-joining players have a chance to become a traitor/changeling
 ALLOW_LATEJOIN_ANTAGONISTS
 
 ## Uncomment to allow players to see the set odds of different rounds in secret/random in the get server revision screen. This will NOT tell the current roundtype.
-#SHOW_GAME_TYPE_ODDS
+SHOW_GAME_TYPE_ODDS
 
 ### RANDOM EVENTS ###
 
@@ -192,7 +181,7 @@ ALLOW_LATEJOIN_ANTAGONISTS
 ### AI ###
 
 ## Allow the AI job to be picked.
-ALLOW_AI
+#ALLOW_AI
 
 
 
@@ -235,9 +224,8 @@ GHOST_INTERACTION
 
 ### NON-VOCAL SILICONS ###
 ## Uncomment to stop the AI, or cyborgs, from having vocal communication.
-#default off
-SILENT_AI
-SILENT_BORG
+#SILENT_AI
+#SILENT_BORG
 
 ### SANDBOX PANEL AUTOCLOSE ###
 ## The sandbox panel's item spawning dialog now stays open even after you click an option.
